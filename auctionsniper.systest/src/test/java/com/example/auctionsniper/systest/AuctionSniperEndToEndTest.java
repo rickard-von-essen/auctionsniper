@@ -1,5 +1,6 @@
 package com.example.auctionsniper.systest;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -9,8 +10,25 @@ import org.junit.experimental.categories.Category;
 @Category(EndToEndCategory.class)
 public class AuctionSniperEndToEndTest {
 
-	@Test
-	public void testNothing() throws Exception {
+	private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
+	private final ApplicationRunner application = new ApplicationRunner();
 
+	@Test
+	public void sniperJoinsAuctionUntilActionCloses() throws Exception {
+		auction.startSellingItem();
+		application.startBiddingIn(auction);
+		auction.hasReceivedJoinRequestsFromSniper();
+		auction.announceClosed();
+		application.showSniperHasLostAuction();
+	}
+
+	@After
+	public void stopAction() {
+		auction.stop();
+	}
+
+	@After
+	public void stopApplication() {
+		application.stop();
 	}
 }
