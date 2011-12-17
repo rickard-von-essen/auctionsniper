@@ -53,5 +53,23 @@
   		<scope>test</scope>
   		<type>jar</type>
   	</dependency>
+  	<dependency>
+  		<groupId>org.jivesoftware</groupId>
+  		<artifactId>smack</artifactId>
+  		<version>3.1.0</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jivesoftware</groupId>
+  		<artifactId>smackx</artifactId>
+  		<version>3.1.0</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.example</groupId>
+  		<artifactId>auctionsniper</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<scope>test</scope>
+  	</dependency>
   </dependencies>
 </project>

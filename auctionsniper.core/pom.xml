@@ -39,5 +39,15 @@
   		<version>1.9.0-rc1</version>
   		<scope>test</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>org.jivesoftware</groupId>
+  		<artifactId>smack</artifactId>
+  		<version>3.1.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jivesoftware</groupId>
+  		<artifactId>smackx</artifactId>
+  		<version>3.1.0</version>
+  	</dependency>
   </dependencies>
 </project>
