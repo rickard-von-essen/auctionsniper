@@ -4,12 +4,14 @@ import static com.example.auctionsniper.MainWindow.STATUS_JOINING;
 import static com.example.auctionsniper.MainWindow.STATUS_LOST;
 
 import com.example.auctionsniper.Main;
+import com.example.auctionsniper.MainWindow;
 
 public class ApplicationRunner {
 
 	protected static final String XMPP_HOSTNAME = "localhost";
 	protected static final String SNIPER_ID = "sniper";
 	protected static final String SNIPER_PASSWORD = "sniper";
+	public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + XMPP_HOSTNAME + "/Auction";
 
 	private AuctionSniperDriver driver;
 
@@ -39,5 +41,9 @@ public class ApplicationRunner {
 		if (driver != null) {
 			driver.dispose();
 		}
+	}
+
+	public void hasShownSniperIsBidding() {
+		driver.showSniperStatus(MainWindow.STATUS_BIDDING);
 	}
 }

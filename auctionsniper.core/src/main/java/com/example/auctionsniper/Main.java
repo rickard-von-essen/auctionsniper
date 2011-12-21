@@ -1,12 +1,13 @@
 package com.example.auctionsniper;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.SwingUtilities;
 
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 
 /**
  * Action Sniper application
@@ -16,12 +17,14 @@ import org.jivesoftware.smack.packet.Message;
  * 
  * Adapted to build with Maven and mock with Moockito.
  */
-public class Main {
+public class Main implements AuctionEventListener {
 	public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
 	public static final String SNIPER_STATUS_NAME = "sniper status";
 
 	public static final String AUCTION_RESOURCE = "Auction";
 	public static final String ITEM_ID_AS_LOGIN = "auction-%s";
+	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
+	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 
 	private static final int ARG_HOSTNAME = 0;
 	private static final int ARG_USERNAME = 1;
@@ -53,20 +56,21 @@ public class Main {
 	}
 
 	private void joinAuction(final XMPPConnection connection, final String itemId) throws XMPPException {
-		final Chat chat = connection.getChatManager().createChat(actionId(itemId, connection), new MessageListener() {
-			@Override
-			public void processMessage(final Chat aChat, final Message message) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						ui.showStatus(MainWindow.STATUS_LOST);
-					}
-				});
-			}
-		});
+		disconnectWhenUICloses(connection);
+		final Chat chat = connection.getChatManager().createChat(actionId(itemId, connection),
+				new AuctionMessageTranslator(this));
 		this.notToBeGCd = chat;
 
-		chat.sendMessage(new Message());
+		chat.sendMessage(JOIN_COMMAND_FORMAT);
+	}
+
+	private void disconnectWhenUICloses(final XMPPConnection connection) {
+		ui.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(final WindowEvent e) {
+				connection.disconnect();
+			}
+		});
 	}
 
 	private static XMPPConnection connectTo(final String hostname, final String username, final String password)
@@ -81,4 +85,19 @@ public class Main {
 		return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
 	}
 
+	@Override
+	public void auctionClosed() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				ui.showStatus(MainWindow.STATUS_LOST);
+			}
+		});
+	}
+
+	@Override
+	public void currentPrice(final int currentPrice, final int increment) {
+		// TODO Auto-generated method stub
+
+	}
 }

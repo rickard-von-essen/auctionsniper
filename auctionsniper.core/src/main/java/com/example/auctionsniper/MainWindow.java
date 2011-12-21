@@ -13,6 +13,7 @@ public class MainWindow extends JFrame {
 
 	public static final String STATUS_JOINING = "Joining auction";
 	public static final String STATUS_LOST = "Auction lost";
+	public static final String STATUS_BIDDING = "Bidding";
 	private static final long serialVersionUID = 1L;
 	private final JLabel sniperStatus = createLabel(STATUS_JOINING);
 
@@ -34,6 +35,5 @@ public class MainWindow extends JFrame {
 
 	public void showStatus(final String status) {
 		sniperStatus.setText(status);
-
 	}
 }
