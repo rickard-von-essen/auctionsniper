@@ -1,7 +1,6 @@
 package com.example.auctionsniper.systest;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -23,7 +22,6 @@ public class AuctionSniperEndToEndTest {
 		application.showSniperHasLostAuction();
 	}
 
-	@Ignore("Under construction")
 	@Test
 	public void sniperMakesAHigherBidButLoses() throws Exception {
 		auction.startSellingItem();

@@ -19,7 +19,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-import com.example.auctionsniper.Main;
+import com.example.auctionsniper.XMPPAuction;
 
 public class FakeAuctionServer {
 
@@ -50,7 +50,7 @@ public class FakeAuctionServer {
 	}
 
 	public void hasReceivedJoinRequestsFromSniper(final String sniperId) throws InterruptedException {
-		reseivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
+		reseivesAMessageMatching(sniperId, equalTo(XMPPAuction.JOIN_COMMAND_FORMAT));
 	}
 
 	public void reportPrice(final int price, final int increment, final String bidder) throws XMPPException {
@@ -59,7 +59,7 @@ public class FakeAuctionServer {
 	}
 
 	public void hasReceivedBid(final int bid, final String sniperId) throws InterruptedException {
-		reseivesAMessageMatching(sniperId, equalTo(format(Main.BID_COMMAND_FORMAT, bid)));
+		reseivesAMessageMatching(sniperId, equalTo(format(XMPPAuction.BID_COMMAND_FORMAT, bid)));
 	}
 
 	public void announceClosed() throws XMPPException {
