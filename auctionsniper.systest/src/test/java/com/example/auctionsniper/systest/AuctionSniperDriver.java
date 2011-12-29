@@ -1,6 +1,8 @@
 package com.example.auctionsniper.systest;
 
+import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
+import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.example.auctionsniper.Main;
@@ -19,5 +21,11 @@ public class AuctionSniperDriver extends JFrameDriver {
 
 	public void showSniperStatus(final String status) {
 		new JTableDriver(this).hasCell(withLabelText(equalTo(status)));
+	}
+
+	public void showSniperStatus(final String itemId, final int lastPrice, final int lastBid, final String statusText) {
+		final JTableDriver table = new JTableDriver(this);
+		table.hasRow(matching(withLabelText(itemId), withLabelText(valueOf(lastPrice)),
+				withLabelText(valueOf(lastBid)), withLabelText(statusText)));
 	}
 }

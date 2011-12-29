@@ -68,6 +68,11 @@ public class Main {
 				}
 			});
 		}
+
+		@Override
+		public void sniperBidding(final SniperState sniperState) {
+			// TODO
+		}
 	}
 
 	private void startUserInterface() throws Exception {
@@ -93,8 +98,8 @@ public class Main {
 
 		final Auction auction = new XMPPAuction(chat);
 
-		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction,
-				new SniperStateDisplayer())));
+		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId,
+				auction, new SniperStateDisplayer())));
 		auction.join();
 	}
 

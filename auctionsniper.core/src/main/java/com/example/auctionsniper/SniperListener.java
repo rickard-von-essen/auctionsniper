@@ -9,4 +9,6 @@ public interface SniperListener {
 	void sniperWinning();
 
 	void sniperWon();
+
+	void sniperBidding(SniperState sniperState);
 }
