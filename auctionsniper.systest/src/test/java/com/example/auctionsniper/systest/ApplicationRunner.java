@@ -37,28 +37,12 @@ public class ApplicationRunner {
 
 	public void showSniperHasLostAuction() {
 		driver.showSniperStatus(STATUS_LOST);
-
 	}
 
 	public void stop() {
 		if (driver != null) {
 			driver.dispose();
 		}
-	}
-
-	@Deprecated
-	public void hasShownSniperIsBidding() {
-		driver.showSniperStatus(MainWindow.STATUS_BIDDING); // TODO remove
-	}
-
-	@Deprecated
-	public void hasShownSniperIsWinning() {
-		driver.showSniperStatus(MainWindow.STATUS_WINNING); // TODO remove
-	}
-
-	@Deprecated
-	public void showSniperHasWonAuction() {
-		driver.showSniperStatus(MainWindow.STATUS_WON); // TODO remove
 	}
 
 	public void hasShownSniperIsBidding(final int lastPrice, final int lastBid) {

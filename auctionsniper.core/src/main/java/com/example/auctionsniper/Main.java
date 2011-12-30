@@ -46,32 +46,30 @@ public class Main {
 		}
 
 		@Override
-		public void sniperBidding() {
-			showStatus(MainWindow.STATUS_BIDDING);
-		}
-
-		@Override
-		public void sniperWinning() {
-			showStatus(MainWindow.STATUS_WINNING);
-		}
-
-		@Override
 		public void sniperWon() {
 			showStatus(MainWindow.STATUS_WON);
 		}
 
+		@Deprecated
 		private void showStatus(final String status) {
+			// TODO to be removed
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					ui.showStatus(status);
+					ui.showState(status);
 				}
 			});
 		}
 
 		@Override
-		public void sniperBidding(final SniperState sniperState) {
-			// TODO
+		public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					// TODO extract from here, doesn't add value.
+					ui.sniperStatusChanged(sniperSnapshot);
+				}
+			});
 		}
 	}
 
@@ -98,8 +96,8 @@ public class Main {
 
 		final Auction auction = new XMPPAuction(chat);
 
-		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId,
-				auction, new SniperStateDisplayer())));
+		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction,
+				new SniperStateDisplayer())));
 		auction.join();
 	}
 

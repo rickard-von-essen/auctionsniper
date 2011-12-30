@@ -1,7 +1,6 @@
 package com.example.auctionsniper.systest;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -15,7 +14,6 @@ public class AuctionSniperEndToEndTest {
 	private final ApplicationRunner application = new ApplicationRunner();
 
 	@Test
-	@Ignore("To be repaired")
 	public void sniperJoinsAuctionUntilActionCloses() throws Exception {
 		auction.startSellingItem();
 		application.startBiddingIn(auction);
@@ -25,7 +23,6 @@ public class AuctionSniperEndToEndTest {
 	}
 
 	@Test
-	@Ignore("To be repaired")
 	public void sniperMakesAHigherBidButLoses() throws Exception {
 		auction.startSellingItem();
 
@@ -33,7 +30,7 @@ public class AuctionSniperEndToEndTest {
 		auction.hasReceivedJoinRequestsFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
 
 		auction.reportPrice(1000, 98, "other bidder");
-		application.hasShownSniperIsBidding();
+		application.hasShownSniperIsBidding(1000, 1098);
 
 		auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
@@ -42,7 +39,6 @@ public class AuctionSniperEndToEndTest {
 	}
 
 	@Test
-	@Ignore("Under construction")
 	public void sniperWinsAnAuctionByBiddingHigher() throws Exception {
 		auction.startSellingItem();
 

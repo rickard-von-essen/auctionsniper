@@ -8,7 +8,6 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 
 public class MainWindow extends JFrame {
 
@@ -44,33 +43,13 @@ public class MainWindow extends JFrame {
 		return snipersTable;
 	}
 
-	public void showStatus(final String status) {
-		snipers.setStatusText(status);
+	@Deprecated
+	public void showState(final String state) {
+		snipers.setStateText(state);
+		// TODO To be removed
 	}
 
-	public class SnipersTableModel extends AbstractTableModel {
-
-		private static final long serialVersionUID = -4113124037723131402L;
-		private String statusText = STATUS_JOINING;
-
-		@Override
-		public int getColumnCount() {
-			return 1;
-		}
-
-		public void setStatusText(final String status) {
-			statusText = status;
-			fireTableRowsUpdated(0, 0);
-		}
-
-		@Override
-		public int getRowCount() {
-			return 1;
-		}
-
-		@Override
-		public Object getValueAt(final int rowIndex, final int columnIndex) {
-			return statusText;
-		}
+	public void sniperStatusChanged(final SniperSnapshot sniperSnapshot) {
+		snipers.sniperStatusChanged(sniperSnapshot);
 	}
 }
