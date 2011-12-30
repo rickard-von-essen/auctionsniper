@@ -11,11 +11,6 @@ import javax.swing.JTable;
 
 public class MainWindow extends JFrame {
 
-	public static final String STATUS_JOINING = "Joining auction";
-	public static final String STATUS_LOST = "Lost";
-	public static final String STATUS_BIDDING = "Bidding";
-	public static final String STATUS_WINNING = "Winning";
-	public static final String STATUS_WON = "Won";
 	private static final String SNIPERS_TABLE_NAME = "Snipers";
 
 	private static final long serialVersionUID = 1L;
@@ -41,12 +36,6 @@ public class MainWindow extends JFrame {
 		final JTable snipersTable = new JTable(snipers);
 		snipersTable.setName(SNIPERS_TABLE_NAME);
 		return snipersTable;
-	}
-
-	@Deprecated
-	public void showState(final String state) {
-		snipers.setStateText(state);
-		// TODO To be removed
 	}
 
 	public void sniperStatusChanged(final SniperSnapshot sniperSnapshot) {

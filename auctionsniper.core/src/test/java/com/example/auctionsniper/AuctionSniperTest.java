@@ -34,7 +34,7 @@ public class AuctionSniperTest {
 	@Test
 	public void reportsLostIfAuctionClosesImmediately() {
 		sniper.auctionClosed();
-		verify(listener).sniperLost();
+		verify(listener).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.LOST))));
 	}
 
 	@Test
@@ -42,10 +42,10 @@ public class AuctionSniperTest {
 		final InOrder inOrder = inOrder(listener);
 
 		sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
-		sniper.auctionClosed();
-
 		inOrder.verify(listener).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.BIDDING))));
-		inOrder.verify(listener, atLeast(1)).sniperLost();
+
+		sniper.auctionClosed();
+		inOrder.verify(listener).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.LOST))));
 	}
 
 	@Test
@@ -53,10 +53,10 @@ public class AuctionSniperTest {
 		final InOrder inOrder = inOrder(listener);
 
 		sniper.currentPrice(123, 45, PriceSource.FromSniper);
-		sniper.auctionClosed();
-
 		inOrder.verify(listener).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.WINNING))));
-		inOrder.verify(listener, atLeast(1)).sniperWon();
+
+		sniper.auctionClosed();
+		inOrder.verify(listener).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.WON))));
 	}
 
 	@Test
