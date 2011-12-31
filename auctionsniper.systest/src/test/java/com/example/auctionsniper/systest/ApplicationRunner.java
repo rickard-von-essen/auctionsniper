@@ -1,6 +1,8 @@
 package com.example.auctionsniper.systest;
 
 import com.example.auctionsniper.Main;
+import com.example.auctionsniper.MainWindow;
+import com.example.auctionsniper.SniperSnapshot;
 import com.example.auctionsniper.SniperState;
 import com.example.auctionsniper.SnipersTableModel;
 
@@ -10,6 +12,7 @@ public class ApplicationRunner {
 	protected static final String SNIPER_ID = "sniper";
 	protected static final String SNIPER_PASSWORD = "sniper";
 	public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + XMPP_HOSTNAME + "/Auction";
+	private static final SniperSnapshot JOINING = SniperSnapshot.joining("");
 
 	private AuctionSniperDriver driver;
 	private String itemId;
@@ -29,18 +32,16 @@ public class ApplicationRunner {
 		};
 		thread.setDaemon(true);
 		thread.start();
+
 		driver = new AuctionSniperDriver(1000);
-		driver.showSniperStatus("", 0, 0, SnipersTableModel.textFor(SniperState.JOINING));
+		driver.hasTitle(MainWindow.APPLICATION_TITLE);
+		driver.hasColumnTitles();
+		driver.showSniperStatus(JOINING.itemId, JOINING.lastPrice, JOINING.lastPrice,
+				SnipersTableModel.textFor(JOINING.state));
 	}
 
 	public void showSniperHasLostAuction(final int lastPrice, final int lastBid) {
 		driver.showSniperStatus(itemId, lastPrice, lastBid, SnipersTableModel.textFor(SniperState.LOST));
-	}
-
-	public void stop() {
-		if (driver != null) {
-			driver.dispose();
-		}
 	}
 
 	public void hasShownSniperIsBidding(final int lastPrice, final int lastBid) {
@@ -53,5 +54,11 @@ public class ApplicationRunner {
 
 	public void showSniperHasWonAuction(final int lastPrice) {
 		driver.showSniperStatus(itemId, lastPrice, lastPrice, SnipersTableModel.textFor(SniperState.WON));
+	}
+
+	public void stop() {
+		if (driver != null) {
+			driver.dispose();
+		}
 	}
 }

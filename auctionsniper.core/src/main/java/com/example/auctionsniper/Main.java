@@ -19,7 +19,6 @@ import org.jivesoftware.smack.XMPPException;
  */
 public class Main {
 
-	public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
 	public static final String SNIPER_STATUS_NAME = "sniper status";
 
 	public static final String AUCTION_RESOURCE = "Auction";
@@ -31,6 +30,7 @@ public class Main {
 	private static final int ARG_ITEM_ID = 3;
 	private static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
 
+	private final SnipersTableModel snipers = new SnipersTableModel();
 	private MainWindow ui;
 	@SuppressWarnings("unused") private Chat notToBeGCd;
 
@@ -38,14 +38,13 @@ public class Main {
 		startUserInterface();
 	}
 
-	private class SniperStateDisplayer implements SniperListener {
+	private class SwingThreadSniperListener implements SniperListener {
 		@Override
 		public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					// TODO extract from here, doesn't add value.
-					ui.sniperStatusChanged(sniperSnapshot);
+					snipers.sniperStateChanged(sniperSnapshot);
 				}
 			});
 		}
@@ -55,7 +54,7 @@ public class Main {
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
-				ui = new MainWindow();
+				ui = new MainWindow(snipers);
 			}
 		});
 	}
@@ -75,7 +74,7 @@ public class Main {
 		final Auction auction = new XMPPAuction(chat);
 
 		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction,
-				new SniperStateDisplayer())));
+				new SwingThreadSniperListener())));
 		auction.join();
 	}
 

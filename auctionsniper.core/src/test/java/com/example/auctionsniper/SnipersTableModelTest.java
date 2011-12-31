@@ -33,7 +33,7 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void setsSniperValuesInColumns() {
-		model.sniperStatusChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
+		model.sniperStateChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
 
 		verify(listener).tableChanged(any(TableModelEvent.class));
 
@@ -47,5 +47,12 @@ public class SnipersTableModelTest {
 		final int rowIndex = 0;
 		final int columnIndex = column.ordinal();
 		assertThat(expected, is(model.getValueAt(rowIndex, columnIndex)));
+	}
+
+	@Test
+	public void setsUpColumnHeadins() throws Exception {
+		for (final Column column : Column.values()) {
+			assertThat(model.getColumnName(column.ordinal()), is(column.name));
+		}
 	}
 }

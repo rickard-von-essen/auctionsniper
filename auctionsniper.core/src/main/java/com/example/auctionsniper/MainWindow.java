@@ -1,7 +1,5 @@
 package com.example.auctionsniper;
 
-import static com.example.auctionsniper.Main.MAIN_WINDOW_NAME;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 
@@ -12,12 +10,15 @@ import javax.swing.JTable;
 public class MainWindow extends JFrame {
 
 	private static final String SNIPERS_TABLE_NAME = "Snipers";
-
+	public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
+	public static final String APPLICATION_TITLE = "Auction Sniper";
 	private static final long serialVersionUID = 1L;
-	private final SnipersTableModel snipers = new SnipersTableModel();
 
-	public MainWindow() {
+	private final SnipersTableModel snipers;
+
+	public MainWindow(final SnipersTableModel snipers) {
 		super("Auction Sniper");
+		this.snipers = snipers;
 		setName(MAIN_WINDOW_NAME);
 		fillContentPane(makeSnipersTable());
 		pack();
@@ -39,6 +40,6 @@ public class MainWindow extends JFrame {
 	}
 
 	public void sniperStatusChanged(final SniperSnapshot sniperSnapshot) {
-		snipers.sniperStatusChanged(sniperSnapshot);
+		snipers.sniperStateChanged(sniperSnapshot);
 	}
 }
