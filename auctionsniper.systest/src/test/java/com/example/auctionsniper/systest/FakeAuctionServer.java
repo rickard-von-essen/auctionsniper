@@ -4,9 +4,8 @@ import static com.example.auctionsniper.Main.AUCTION_RESOURCE;
 import static com.example.auctionsniper.Main.ITEM_ID_AS_LOGIN;
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -83,10 +82,9 @@ public class FakeAuctionServer {
 			messages.add(message);
 		}
 
-		public void reseivesAMessage(final Matcher<? super String> messageMatcher) throws InterruptedException {
+		public void reseivesAMessage(final Matcher messageMatcher) throws InterruptedException {
 			final Message message = messages.poll(5, SECONDS);
-			assertThat("Message", message, is(notNullValue()));
-			assertThat(message.getBody(), messageMatcher);
+			assertThat(message, hasProperty("body", messageMatcher));
 		}
 	}
 
