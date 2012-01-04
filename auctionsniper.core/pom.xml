@@ -63,7 +63,7 @@
   	<dependency>
   		<groupId>org.jmock</groupId>
   		<artifactId>example.announcer</artifactId>
-  		<version>trunk-r1396</version>
+  		<version>trunk-r1396-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>
