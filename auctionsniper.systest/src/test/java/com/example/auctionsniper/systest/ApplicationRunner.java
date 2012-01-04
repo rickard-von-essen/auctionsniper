@@ -18,6 +18,15 @@ public class ApplicationRunner {
 
 	public void startBiddingIn(final FakeAuctionServer... auctions) {
 
+		startSniper(auctions);
+		for (final FakeAuctionServer auction : auctions) {
+			final String itemId = auction.getItemId();
+			driver.startBiddingFor(itemId);
+			driver.showSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.JOINING));
+		}
+	}
+
+	private void startSniper(final FakeAuctionServer... auctions) {
 		final Thread thread = new Thread("Test Application") {
 			@Override
 			public void run() {
@@ -35,12 +44,10 @@ public class ApplicationRunner {
 		driver = new AuctionSniperDriver(1000);
 		driver.hasTitle(MainWindow.APPLICATION_TITLE);
 		driver.hasColumnTitles();
-		for (final FakeAuctionServer auction : auctions) {
-			driver.showSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.JOINING));
-		}
 	}
 
 	private static String[] arguments(final FakeAuctionServer... auctions) {
+		// TODO remove adding actions to args
 		final String[] arguments = new String[auctions.length + 3];
 		arguments[0] = XMPP_HOSTNAME;
 		arguments[1] = SNIPER_ID;

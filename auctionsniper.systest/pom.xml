@@ -42,16 +42,14 @@
   	<dependency>
   		<groupId>com.objogate</groupId>
 		<artifactId>windowlicker.core</artifactId>
-		<version>trunk-r268</version>
+		<version>trunk-r268-Mac-SE</version>
 		<scope>test</scope>
-		<type>jar</type>
 	</dependency>
   	<dependency>
   		<groupId>com.objogate</groupId>
   		<artifactId>windowlicker.swing</artifactId>
   		<version>trunk-r268</version>
   		<scope>test</scope>
-  		<type>jar</type>
   	</dependency>
   	<dependency>
   		<groupId>org.jivesoftware</groupId>

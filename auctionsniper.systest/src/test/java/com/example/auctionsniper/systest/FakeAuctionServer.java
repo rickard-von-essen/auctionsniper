@@ -82,7 +82,7 @@ public class FakeAuctionServer {
 			messages.add(message);
 		}
 
-		public void reseivesAMessage(final Matcher messageMatcher) throws InterruptedException {
+		public void reseivesAMessage(final Matcher<String> messageMatcher) throws InterruptedException {
 			final Message message = messages.poll(5, SECONDS);
 			assertThat(message, hasProperty("body", messageMatcher));
 		}
