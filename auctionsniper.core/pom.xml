@@ -60,5 +60,10 @@
   		<artifactId>commons-lang3</artifactId>
   		<version>3.1</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.jmock</groupId>
+  		<artifactId>example.announcer</artifactId>
+  		<version>trunk-r1396</version>
+  	</dependency>
   </dependencies>
 </project>

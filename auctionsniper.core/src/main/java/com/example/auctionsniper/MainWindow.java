@@ -3,6 +3,8 @@ package com.example.auctionsniper;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import org.jmock.example.announcer.Announcer;
 
 public class MainWindow extends JFrame {
 
@@ -21,6 +25,7 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private final SnipersTableModel snipers;
+	private final Announcer<UserRequestListener> userRequests = Announcer.to(UserRequestListener.class);
 
 	public MainWindow(final SnipersTableModel snipers) {
 		super("Auction Sniper");
@@ -41,6 +46,12 @@ public class MainWindow extends JFrame {
 
 		final JButton joinAuctionButton = new JButton("Join auction");
 		joinAuctionButton.setName(JOIN_BUTTON_NAME);
+		joinAuctionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				userRequests.announce().joinAuction(itemIdField.getText());
+			}
+		});
 		controls.add(joinAuctionButton);
 
 		return controls;
@@ -62,5 +73,9 @@ public class MainWindow extends JFrame {
 
 	public void sniperStatusChanged(final SniperSnapshot sniperSnapshot) {
 		snipers.sniperStateChanged(sniperSnapshot);
+	}
+
+	public void addUserRequestListener(final UserRequestListener userRequestListener) {
+		userRequests.addListener(userRequestListener);
 	}
 }
