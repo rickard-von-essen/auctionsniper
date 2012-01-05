@@ -2,7 +2,6 @@ package com.example.auctionsniper.systest.ui;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.example.auctionsniper.MainWindow;
@@ -16,11 +15,6 @@ public class MainWindowTest {
 	private final SnipersTableModel tableModel = new SnipersTableModel();
 	private final MainWindow mainWindow = new MainWindow(tableModel);
 	private final AuctionSniperDriver driver = new AuctionSniperDriver(100);
-
-	@BeforeClass
-	public static void setKeyboardLayout() {
-		System.setProperty("com.objogate.wl.keyboard", "Mac-SE");
-	}
 
 	@Test
 	public void makesUserRequestWhenJoinButtonClicked() {

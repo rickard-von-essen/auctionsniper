@@ -1,7 +1,6 @@
 package com.example.auctionsniper.systest;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -14,11 +13,6 @@ public class AuctionSniperEndToEndTest {
 	private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
 	private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
 	private final ApplicationRunner application = new ApplicationRunner();
-
-	@Before
-	public void setKeyboardLayout() {
-		System.setProperty("com.objogate.wl.keyboard", "Mac-SE");
-	}
 
 	@Test
 	public void sniperJoinsAuctionUntilActionCloses() throws Exception {
