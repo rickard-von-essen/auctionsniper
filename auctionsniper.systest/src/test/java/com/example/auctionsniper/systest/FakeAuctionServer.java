@@ -1,7 +1,7 @@
 package com.example.auctionsniper.systest;
 
 import static com.example.auctionsniper.Main.AUCTION_RESOURCE;
-import static com.example.auctionsniper.Main.ITEM_ID_AS_LOGIN;
+import static com.example.auctionsniper.xmpp.XMPPAuction.ITEM_ID_AS_LOGIN;
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
@@ -18,7 +18,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-import com.example.auctionsniper.XMPPAuction;
+import com.example.auctionsniper.xmpp.XMPPAuction;
 
 public class FakeAuctionServer {
 

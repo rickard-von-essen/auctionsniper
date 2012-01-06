@@ -1,4 +1,6 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.ui;
+
+import com.example.auctionsniper.SniperSnapshot;
 
 public enum Column {
 	ITEM_IDENTIFIER("Item") {
@@ -26,7 +28,7 @@ public enum Column {
 		}
 	};
 
-	final String name;
+	public final String name;
 
 	private Column(final String name) {
 		this.name = name;

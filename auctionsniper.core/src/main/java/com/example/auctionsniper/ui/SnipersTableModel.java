@@ -1,9 +1,14 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.example.auctionsniper.Defect;
+import com.example.auctionsniper.SniperListener;
+import com.example.auctionsniper.SniperSnapshot;
+import com.example.auctionsniper.SniperState;
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
 

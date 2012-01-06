@@ -1,4 +1,4 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.ui;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
@@ -16,6 +16,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.example.auctionsniper.Defect;
+import com.example.auctionsniper.SniperSnapshot;
+import com.example.auctionsniper.SniperState;
+import com.example.auctionsniper.ui.Column;
+import com.example.auctionsniper.ui.SnipersTableModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SnipersTableModelTest {

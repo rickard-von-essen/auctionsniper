@@ -1,9 +1,13 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.ui;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+
+import com.example.auctionsniper.SniperSnapshot;
+import com.example.auctionsniper.SniperState;
+import com.example.auctionsniper.ui.Column;
 
 public class ColumnTest {
 

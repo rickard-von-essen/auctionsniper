@@ -4,10 +4,10 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import org.junit.Test;
 
-import com.example.auctionsniper.MainWindow;
-import com.example.auctionsniper.SnipersTableModel;
 import com.example.auctionsniper.UserRequestListener;
 import com.example.auctionsniper.systest.AuctionSniperDriver;
+import com.example.auctionsniper.ui.MainWindow;
+import com.example.auctionsniper.ui.SnipersTableModel;
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 
 public class MainWindowTest {

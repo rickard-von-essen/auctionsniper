@@ -1,4 +1,4 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -14,6 +14,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.jmock.example.announcer.Announcer;
+
+import com.example.auctionsniper.SniperSnapshot;
+import com.example.auctionsniper.UserRequestListener;
 
 public class MainWindow extends JFrame {
 

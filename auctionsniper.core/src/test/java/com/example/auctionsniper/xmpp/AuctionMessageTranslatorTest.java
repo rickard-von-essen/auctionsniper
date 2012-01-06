@@ -1,4 +1,4 @@
-package com.example.auctionsniper;
+package com.example.auctionsniper.xmpp;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.example.auctionsniper.AuctionEventListener;
 import com.example.auctionsniper.AuctionEventListener.PriceSource;
+import com.example.auctionsniper.xmpp.AuctionMessageTranslator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuctionMessageTranslatorTest {

@@ -1,24 +1,25 @@
 package com.example.auctionsniper.systest;
 
-import static com.example.auctionsniper.SnipersTableModel.textFor;
+import static com.example.auctionsniper.ui.SnipersTableModel.textFor;
 
 import com.example.auctionsniper.Main;
-import com.example.auctionsniper.MainWindow;
 import com.example.auctionsniper.SniperState;
-import com.example.auctionsniper.SnipersTableModel;
+import com.example.auctionsniper.ui.MainWindow;
+import com.example.auctionsniper.ui.SnipersTableModel;
 
 public class ApplicationRunner {
 
-	protected static final String XMPP_HOSTNAME = "localhost";
-	protected static final String SNIPER_ID = "sniper";
-	protected static final String SNIPER_PASSWORD = "sniper";
-	public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + XMPP_HOSTNAME + "/Auction";
+	public static final String AUCTION_RESOURCE = "Auction";
+	public static final String XMPP_HOSTNAME = "localhost";
+	public static final String SNIPER_ID = "sniper";
+	public static final String SNIPER_PASSWORD = "sniper";
+	public static final String SNIPER_XMPP_ID = String.format("%s@%s/%s", SNIPER_ID, XMPP_HOSTNAME, AUCTION_RESOURCE);
 
 	private AuctionSniperDriver driver;
 
 	public void startBiddingIn(final FakeAuctionServer... auctions) {
 
-		startSniper(auctions);
+		startSniper();
 		for (final FakeAuctionServer auction : auctions) {
 			final String itemId = auction.getItemId();
 			driver.startBiddingFor(itemId);
@@ -26,12 +27,12 @@ public class ApplicationRunner {
 		}
 	}
 
-	private void startSniper(final FakeAuctionServer... auctions) {
+	private void startSniper() {
 		final Thread thread = new Thread("Test Application") {
 			@Override
 			public void run() {
 				try {
-					Main.main(arguments(auctions));
+					Main.main(new String[] { XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD });
 				} catch (final Exception error) {
 					error.printStackTrace();
 				}
@@ -45,19 +46,6 @@ public class ApplicationRunner {
 		driver.hasTitle(MainWindow.APPLICATION_TITLE);
 		driver.hasColumnTitles();
 	}
-
-	private static String[] arguments(final FakeAuctionServer... auctions) {
-		// TODO remove adding actions to args
-		final String[] arguments = new String[auctions.length + 3];
-		arguments[0] = XMPP_HOSTNAME;
-		arguments[1] = SNIPER_ID;
-		arguments[2] = SNIPER_PASSWORD;
-		for (int i = 0; i < auctions.length; i++) {
-			arguments[i + 3] = auctions[i].getItemId();
-		}
-
-		return arguments;
-	};
 
 	public void showSniperHasLostAuction(final FakeAuctionServer auction, final int lastPrice, final int lastBid) {
 		driver.showSniperStatus(auction.getItemId(), lastPrice, lastBid, SnipersTableModel.textFor(SniperState.LOST));

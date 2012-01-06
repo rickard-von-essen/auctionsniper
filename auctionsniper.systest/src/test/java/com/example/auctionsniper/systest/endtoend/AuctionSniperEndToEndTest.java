@@ -1,8 +1,11 @@
-package com.example.auctionsniper.systest;
+package com.example.auctionsniper.systest.endtoend;
 
 import org.junit.After;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import com.example.auctionsniper.systest.ApplicationRunner;
+import com.example.auctionsniper.systest.FakeAuctionServer;
 
 /**
  * End-to-end test for Action Sniper application,
