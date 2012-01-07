@@ -3,18 +3,39 @@ package com.example.auctionsniper.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
+import com.example.auctionsniper.AuctionSniper;
 import com.example.auctionsniper.Defect;
 import com.example.auctionsniper.SniperListener;
 import com.example.auctionsniper.SniperSnapshot;
 import com.example.auctionsniper.SniperState;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
 
 	private static final long serialVersionUID = -4113124037723131402L;
 	private final List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
+	private final List<AuctionSniper> notToBeGCd = new ArrayList<AuctionSniper>();
 	private static final String[] STATUS_TEXT = { "Joining auction", "Bidding", "Winning", "Lost", "Won" };
+
+	private class SwingThreadSniperListener implements SniperListener {
+		private final SnipersTableModel snipers;
+
+		public SwingThreadSniperListener(final SnipersTableModel snipers) {
+			this.snipers = snipers;
+		}
+
+		@Override
+		public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					snipers.sniperStateChanged(sniperSnapshot);
+				}
+			});
+		}
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -56,9 +77,16 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 		throw new Defect("Cannot find match for " + snapshot);
 	}
 
-	public void addSniper(final SniperSnapshot snapshot) {
-		snapshots.add(snapshot);
-		final int rowIndex = snapshots.size();
+	@Override
+	public void addSniper(final AuctionSniper sniper) {
+		notToBeGCd.add(sniper);
+		addSniperSnapshot(sniper.getSnapshot());
+		sniper.addSniperListener(new SwingThreadSniperListener(this));
+	}
+
+	private void addSniperSnapshot(final SniperSnapshot sniperSnapshot) {
+		snapshots.add(sniperSnapshot);
+		final int rowIndex = snapshots.size() - 1;
 		fireTableRowsInserted(rowIndex, rowIndex);
 	}
 }

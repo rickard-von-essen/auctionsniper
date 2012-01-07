@@ -17,11 +17,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.example.auctionsniper.AuctionSniper;
 import com.example.auctionsniper.Defect;
 import com.example.auctionsniper.SniperSnapshot;
 import com.example.auctionsniper.SniperState;
-import com.example.auctionsniper.ui.Column;
-import com.example.auctionsniper.ui.SnipersTableModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SnipersTableModelTest {
@@ -41,9 +40,9 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void setsSniperValuesInColumns() {
-		final SniperSnapshot joining = SniperSnapshot.joining("item id");
-		final SniperSnapshot bidding = joining.bidding(555, 666);
-		model.addSniper(joining);
+		final AuctionSniper sniper = new AuctionSniper("item id", null);
+		final SniperSnapshot bidding = sniper.getSnapshot().bidding(555, 666);
+		model.addSniper(sniper);
 
 		model.sniperStateChanged(bidding);
 
@@ -60,20 +59,20 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void notifiesListenersWhenAddingASniper() throws Exception {
-		final SniperSnapshot joining = SniperSnapshot.joining("item123");
+		final AuctionSniper auction = new AuctionSniper("item123", null);
 		assertThat(model.getRowCount(), is(0));
 
-		model.addSniper(joining);
-		verify(listener).tableChanged(argThat(is(anInsertionAtRow(1))));
+		model.addSniper(auction);
+		verify(listener).tableChanged(argThat(is(anInsertionAtRow(0))));
 
 		assertThat(model.getRowCount(), is(1));
-		assertRowMatchesSnapshot(0, joining);
+		assertRowMatchesSnapshot(0, auction.getSnapshot());
 	}
 
 	@Test
 	public void holdsSnipersInAdditionOrder() throws Exception {
-		model.addSniper(SniperSnapshot.joining("item 0"));
-		model.addSniper(SniperSnapshot.joining("item 1"));
+		model.addSniper(new AuctionSniper("item 0", null));
+		model.addSniper(new AuctionSniper("item 1", null));
 
 		assertThat("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
 		assertThat("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
@@ -81,10 +80,10 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void updatesCorrectRowForSniper() throws Exception {
-		model.addSniper(SniperSnapshot.joining("item 0"));
-		final SniperSnapshot item1 = SniperSnapshot.joining("item 1");
-		model.addSniper(item1);
-		model.sniperStateChanged(item1.bidding(200, 100));
+		model.addSniper(new AuctionSniper("item 0", null));
+		final AuctionSniper auction1 = new AuctionSniper("item 1", null);
+		model.addSniper(auction1);
+		model.sniperStateChanged(auction1.getSnapshot().bidding(200, 100));
 
 		assertThat(200, cellValue(1, Column.LAST_PRICE));
 		assertThat(100, cellValue(1, Column.LAST_BID));
