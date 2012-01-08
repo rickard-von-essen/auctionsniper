@@ -42,7 +42,7 @@ public class SnipersTableModelTest {
 	public void setsSniperValuesInColumns() {
 		final AuctionSniper sniper = new AuctionSniper("item id", null);
 		final SniperSnapshot bidding = sniper.getSnapshot().bidding(555, 666);
-		model.addSniper(sniper);
+		model.sniperAdded(sniper);
 
 		model.sniperStateChanged(bidding);
 
@@ -62,7 +62,7 @@ public class SnipersTableModelTest {
 		final AuctionSniper auction = new AuctionSniper("item123", null);
 		assertThat(model.getRowCount(), is(0));
 
-		model.addSniper(auction);
+		model.sniperAdded(auction);
 		verify(listener).tableChanged(argThat(is(anInsertionAtRow(0))));
 
 		assertThat(model.getRowCount(), is(1));
@@ -71,8 +71,8 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void holdsSnipersInAdditionOrder() throws Exception {
-		model.addSniper(new AuctionSniper("item 0", null));
-		model.addSniper(new AuctionSniper("item 1", null));
+		model.sniperAdded(new AuctionSniper("item 0", null));
+		model.sniperAdded(new AuctionSniper("item 1", null));
 
 		assertThat("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
 		assertThat("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
@@ -80,9 +80,9 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void updatesCorrectRowForSniper() throws Exception {
-		model.addSniper(new AuctionSniper("item 0", null));
+		model.sniperAdded(new AuctionSniper("item 0", null));
 		final AuctionSniper auction1 = new AuctionSniper("item 1", null);
-		model.addSniper(auction1);
+		model.sniperAdded(auction1);
 		model.sniperStateChanged(auction1.getSnapshot().bidding(200, 100));
 
 		assertThat(200, cellValue(1, Column.LAST_PRICE));

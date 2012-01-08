@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import org.jmock.example.announcer.Announcer;
 
-import com.example.auctionsniper.SniperSnapshot;
+import com.example.auctionsniper.SniperPortfolio;
 import com.example.auctionsniper.UserRequestListener;
 
 public class MainWindow extends JFrame {
@@ -27,14 +27,12 @@ public class MainWindow extends JFrame {
 	public static final String JOIN_BUTTON_NAME = "join button";
 	private static final long serialVersionUID = 1L;
 
-	private final SnipersTableModel snipers;
 	private final Announcer<UserRequestListener> userRequests = Announcer.to(UserRequestListener.class);
 
-	public MainWindow(final SnipersTableModel snipers) {
+	public MainWindow(final SniperPortfolio portfolio) {
 		super("Auction Sniper");
-		this.snipers = snipers;
 		setName(MAIN_WINDOW_NAME);
-		fillContentPane(makeSnipersTable(), makeControls());
+		fillContentPane(makeSnipersTable(portfolio), makeControls());
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -68,14 +66,12 @@ public class MainWindow extends JFrame {
 		contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
 	}
 
-	private JTable makeSnipersTable() {
-		final JTable snipersTable = new JTable(snipers);
+	private JTable makeSnipersTable(final SniperPortfolio portfolio) {
+		final SnipersTableModel model = new SnipersTableModel();
+		portfolio.addPortfolioListener(model);
+		final JTable snipersTable = new JTable(model);
 		snipersTable.setName(SNIPERS_TABLE_NAME);
 		return snipersTable;
-	}
-
-	public void sniperStatusChanged(final SniperSnapshot sniperSnapshot) {
-		snipers.sniperStateChanged(sniperSnapshot);
 	}
 
 	public void addUserRequestListener(final UserRequestListener userRequestListener) {
