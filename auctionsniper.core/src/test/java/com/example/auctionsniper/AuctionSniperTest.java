@@ -21,14 +21,14 @@ import com.example.auctionsniper.AuctionEventListener.PriceSource;
 @RunWith(MockitoJUnitRunner.class)
 public class AuctionSniperTest {
 
-	private static final String ITEM_ID = "item-431";
+	private static final Item ITEM = new Item("item-431", 1234);
 	@Mock private Auction auction;
 	@Mock private SniperListener listener;
 	private AuctionSniper sniper;
 
 	@Before
 	public void createSniper() {
-		sniper = new AuctionSniper(ITEM_ID, auction);
+		sniper = new AuctionSniper(ITEM, auction);
 		sniper.addSniperListener(listener);
 	}
 
@@ -68,7 +68,7 @@ public class AuctionSniperTest {
 
 		sniper.currentPrice(price, increment, PriceSource.FromOtherBidder);
 		verify(auction).bid(price + increment);
-		verify(listener, atLeast(1)).sniperStateChanged(new SniperSnapshot(ITEM_ID, price, bid, SniperState.BIDDING));
+		verify(listener, atLeast(1)).sniperStateChanged(new SniperSnapshot(ITEM, price, bid, SniperState.BIDDING));
 	}
 
 	@Test
@@ -77,10 +77,22 @@ public class AuctionSniperTest {
 
 		sniper.currentPrice(123, 12, PriceSource.FromOtherBidder);
 		sniper.currentPrice(135, 45, PriceSource.FromSniper);
-		inOrder.verify(listener, atLeast(1)).sniperStateChanged(
-				new SniperSnapshot(ITEM_ID, 123, 135, SniperState.BIDDING));
-		inOrder.verify(listener, atLeast(1)).sniperStateChanged(
-				new SniperSnapshot(ITEM_ID, 135, 135, SniperState.WINNING));
+		inOrder.verify(listener, atLeast(1))
+				.sniperStateChanged(new SniperSnapshot(ITEM, 123, 135, SniperState.BIDDING));
+		inOrder.verify(listener, atLeast(1))
+				.sniperStateChanged(new SniperSnapshot(ITEM, 135, 135, SniperState.WINNING));
+	}
+
+	@Test
+	public void doesNotBidAndReportsLosingIfSubsecquentPricesIsAboveStopPrice() throws Exception {
+		final InOrder inOrder = inOrder(listener);
+		final int bid = 123 + 45;
+
+		sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+
+		inOrder.verify(listener, atLeast(1)).sniperStateChanged(argThat(is(aSniperThatIs(SniperState.BIDDING))));
+		inOrder.verify(listener).sniperStateChanged(new SniperSnapshot(ITEM, 2345, bid, SniperState.LOSING));
 	}
 
 	private Matcher<SniperSnapshot> aSniperThatIs(final SniperState state) {

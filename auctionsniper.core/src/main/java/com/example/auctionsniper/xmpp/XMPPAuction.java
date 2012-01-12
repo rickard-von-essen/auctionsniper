@@ -9,6 +9,7 @@ import org.jmock.example.announcer.Announcer;
 
 import com.example.auctionsniper.Auction;
 import com.example.auctionsniper.AuctionEventListener;
+import com.example.auctionsniper.Item;
 
 public class XMPPAuction implements Auction {
 
@@ -22,13 +23,13 @@ public class XMPPAuction implements Auction {
 	private final Chat chat;
 	final Announcer<AuctionEventListener> auctionEventListeners = Announcer.to(AuctionEventListener.class);
 
-	public XMPPAuction(final XMPPConnection connection, final String itemId) {
+	public XMPPAuction(final XMPPConnection connection, final Item itemId) {
 		chat = connection.getChatManager().createChat(auctionId(itemId, connection),
 				new AuctionMessageTranslator(connection.getUser(), auctionEventListeners.announce()));
 	}
 
-	private static String auctionId(final String itemId, final XMPPConnection connection) {
-		return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+	private static String auctionId(final Item item, final XMPPConnection connection) {
+		return String.format(AUCTION_ID_FORMAT, item.itemId, connection.getServiceName());
 	}
 
 	@Override

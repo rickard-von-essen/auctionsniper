@@ -17,7 +17,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
 	private static final long serialVersionUID = -4113124037723131402L;
 	private final List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
-	private static final String[] STATUS_TEXT = { "Joining auction", "Bidding", "Winning", "Lost", "Won" };
+	private static final String[] STATUS_TEXT = { "Joining auction", "Bidding", "Winning", "Losing", "Lost", "Won" };
 
 	private class SwingThreadSniperListener implements SniperListener {
 		private final SnipersTableModel snipers;

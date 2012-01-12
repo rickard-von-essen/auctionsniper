@@ -18,13 +18,21 @@ public class ApplicationRunner {
 	private AuctionSniperDriver driver;
 
 	public void startBiddingIn(final FakeAuctionServer... auctions) {
-
 		startSniper();
 		for (final FakeAuctionServer auction : auctions) {
-			final String itemId = auction.getItemId();
-			driver.startBiddingFor(itemId);
-			driver.showSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.JOINING));
+			startBiddingFor(auction, Integer.MAX_VALUE);
 		}
+	}
+
+	public void startBiddingWithStopPrice(final FakeAuctionServer auction, final int stopPrice) {
+		startSniper();
+		startBiddingFor(auction, stopPrice);
+	}
+
+	private void startBiddingFor(final FakeAuctionServer auction, final int stopPrice) {
+		final String itemId = auction.getItemId();
+		driver.startBiddingFor(itemId, stopPrice);
+		driver.showSniperStatus(itemId, 0, 0, textFor(SniperState.JOINING));
 	}
 
 	private void startSniper() {
@@ -68,5 +76,9 @@ public class ApplicationRunner {
 		if (driver != null) {
 			driver.dispose();
 		}
+	}
+
+	public void hasShownSniperIsLosing(final FakeAuctionServer auction, final int i, final int j) {
+		// TODO Auto-generated method stub
 	}
 }

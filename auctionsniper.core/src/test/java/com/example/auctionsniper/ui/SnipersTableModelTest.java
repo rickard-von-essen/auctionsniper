@@ -19,6 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.example.auctionsniper.AuctionSniper;
 import com.example.auctionsniper.Defect;
+import com.example.auctionsniper.Item;
 import com.example.auctionsniper.SniperSnapshot;
 import com.example.auctionsniper.SniperState;
 
@@ -40,7 +41,7 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void setsSniperValuesInColumns() {
-		final AuctionSniper sniper = new AuctionSniper("item id", null);
+		final AuctionSniper sniper = new AuctionSniper(new Item("item id", Integer.MAX_VALUE), null);
 		final SniperSnapshot bidding = sniper.getSnapshot().bidding(555, 666);
 		model.sniperAdded(sniper);
 
@@ -59,7 +60,7 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void notifiesListenersWhenAddingASniper() throws Exception {
-		final AuctionSniper auction = new AuctionSniper("item123", null);
+		final AuctionSniper auction = new AuctionSniper(new Item("item123", Integer.MAX_VALUE), null);
 		assertThat(model.getRowCount(), is(0));
 
 		model.sniperAdded(auction);
@@ -71,8 +72,8 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void holdsSnipersInAdditionOrder() throws Exception {
-		model.sniperAdded(new AuctionSniper("item 0", null));
-		model.sniperAdded(new AuctionSniper("item 1", null));
+		model.sniperAdded(new AuctionSniper(new Item("item 0", Integer.MAX_VALUE), null));
+		model.sniperAdded(new AuctionSniper(new Item("item 1", Integer.MAX_VALUE), null));
 
 		assertThat("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
 		assertThat("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
@@ -80,8 +81,8 @@ public class SnipersTableModelTest {
 
 	@Test
 	public void updatesCorrectRowForSniper() throws Exception {
-		model.sniperAdded(new AuctionSniper("item 0", null));
-		final AuctionSniper auction1 = new AuctionSniper("item 1", null);
+		model.sniperAdded(new AuctionSniper(new Item("item 0", Integer.MAX_VALUE), null));
+		final AuctionSniper auction1 = new AuctionSniper(new Item("item 1", Integer.MAX_VALUE), null);
 		model.sniperAdded(auction1);
 		model.sniperStateChanged(auction1.getSnapshot().bidding(200, 100));
 
@@ -91,7 +92,8 @@ public class SnipersTableModelTest {
 
 	@Test(expected = Defect.class)
 	public void throwsDefectIfNotExistingSniperForAnUpdate() throws Exception {
-		model.sniperStateChanged(new SniperSnapshot("non-exisiting item", 123, 456, SniperState.BIDDING));
+		model.sniperStateChanged(new SniperSnapshot(new Item("non-exisiting item", Integer.MAX_VALUE), 123, 456,
+				SniperState.BIDDING));
 	}
 
 	private Matcher<Object> cellValue(final int rowIndex, final Column column) {

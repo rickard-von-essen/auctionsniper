@@ -14,6 +14,7 @@ import org.junit.experimental.categories.Category;
 
 import com.example.auctionsniper.Auction;
 import com.example.auctionsniper.AuctionEventListener;
+import com.example.auctionsniper.Item;
 import com.example.auctionsniper.systest.ApplicationRunner;
 import com.example.auctionsniper.systest.FakeAuctionServer;
 import com.example.auctionsniper.xmpp.XMPPAuctionHouse;
@@ -21,8 +22,8 @@ import com.example.auctionsniper.xmpp.XMPPAuctionHouse;
 @Category(IntegrationCategory.class)
 public class XMPPAuctionHouseTest {
 
-	private static final String ITEM_ID = "item-54321";
-	private final FakeAuctionServer server = new FakeAuctionServer(ITEM_ID);
+	private static final Item ITEM = new Item("item-54321", Integer.MAX_VALUE);
+	private final FakeAuctionServer server = new FakeAuctionServer(ITEM.itemId);
 	private XMPPAuctionHouse auctionHouse;
 
 	@Before
@@ -52,7 +53,7 @@ public class XMPPAuctionHouseTest {
 	public void receivesEventsFromAuctionServerAfterJoining() throws Exception {
 		final CountDownLatch auctionWasClosed = new CountDownLatch(1);
 
-		final Auction auction = auctionHouse.auctionFor(ITEM_ID);
+		final Auction auction = auctionHouse.auctionFor(ITEM);
 		auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
 
 		auction.join();

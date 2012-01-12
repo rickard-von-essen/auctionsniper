@@ -6,7 +6,7 @@ public enum Column {
 	ITEM_IDENTIFIER("Item") {
 		@Override
 		public Object valueIn(final SniperSnapshot snapshot) {
-			return snapshot.itemId;
+			return snapshot.item.itemId;
 		}
 	},
 	LAST_PRICE("Last Price") {

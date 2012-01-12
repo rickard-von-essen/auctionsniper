@@ -8,11 +8,11 @@ public class SniperSnapshot {
 
 	public final int lastBid;
 	public final int lastPrice;
-	public final String itemId;
+	public final Item item;
 	public final SniperState state;
 
-	public SniperSnapshot(final String itemId, final int lastPrice, final int lastBid, final SniperState state) {
-		this.itemId = itemId;
+	public SniperSnapshot(final Item item, final int lastPrice, final int lastBid, final SniperState state) {
+		this.item = item;
 		this.lastPrice = lastPrice;
 		this.lastBid = lastBid;
 		this.state = state;
@@ -33,23 +33,27 @@ public class SniperSnapshot {
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
-	public static SniperSnapshot joining(final String itemId) {
-		return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
+	public static SniperSnapshot joining(final Item item) {
+		return new SniperSnapshot(item, 0, 0, SniperState.JOINING);
 	}
 
 	public SniperSnapshot winning(final int newLastPrice) {
-		return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
+		return new SniperSnapshot(item, newLastPrice, lastBid, SniperState.WINNING);
 	}
 
 	public SniperSnapshot bidding(final int newLastPrice, final int newLastBid) {
-		return new SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING);
+		return new SniperSnapshot(item, newLastPrice, newLastBid, SniperState.BIDDING);
 	}
 
 	public SniperSnapshot closed() {
-		return new SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed());
+		return new SniperSnapshot(item, lastPrice, lastBid, state.whenAuctionClosed());
 	}
 
 	public boolean isForSameItemAs(final SniperSnapshot sniperSnapshot) {
-		return itemId.equals(sniperSnapshot.itemId);
+		return item.equals(sniperSnapshot.item);
+	}
+
+	public SniperSnapshot losing(final int lastPrice) {
+		return new SniperSnapshot(item, lastPrice, lastBid, SniperState.LOSING);
 	}
 }

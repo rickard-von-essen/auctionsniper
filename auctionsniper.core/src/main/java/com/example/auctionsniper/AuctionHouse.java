@@ -1,7 +1,7 @@
 package com.example.auctionsniper;
 
 public interface AuctionHouse {
-	Auction auctionFor(String itemId);
+	Auction auctionFor(Item item);
 
 	void disconnect();
 }

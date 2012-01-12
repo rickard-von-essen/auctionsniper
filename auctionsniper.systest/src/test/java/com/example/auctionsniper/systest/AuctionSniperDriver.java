@@ -38,14 +38,14 @@ public class AuctionSniperDriver extends JFrameDriver {
 				withLabelText("State")));
 	}
 
-	public void startBiddingFor(final String itemId) {
-		itemIdField().replaceAllText(itemId);
+	public void startBiddingFor(final String itemId, final int stopPrice) {
+		textField(MainWindow.NEW_ITEM_ID_NAME).replaceAllText(itemId);
+		textField(MainWindow.STOP_PRICE_NAME).replaceAllText(String.valueOf(stopPrice));
 		bidButton().click();
 	}
 
-	private JTextFieldDriver itemIdField() {
-		final JTextFieldDriver newItemId = new JTextFieldDriver(this, JTextField.class,
-				named(MainWindow.NEW_ITEM_ID_NAME));
+	private JTextFieldDriver textField(final String textFieldId) {
+		final JTextFieldDriver newItemId = new JTextFieldDriver(this, JTextField.class, named(textFieldId));
 		newItemId.focusWithMouse();
 		return newItemId;
 	}

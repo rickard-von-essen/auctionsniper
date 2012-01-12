@@ -5,9 +5,9 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import com.example.auctionsniper.Item;
 import com.example.auctionsniper.SniperSnapshot;
 import com.example.auctionsniper.SniperState;
-import com.example.auctionsniper.ui.Column;
 
 public class ColumnTest {
 
@@ -21,12 +21,12 @@ public class ColumnTest {
 
 	@Test
 	public void checkValueInReturnsCorrectValue() throws Exception {
-		final String itemId = "item id";
+		final Item item = new Item("item id", Integer.MAX_VALUE);
 		final int lastPrice = 555;
 		final int lastBid = 666;
-		final SniperSnapshot snapshot = new SniperSnapshot(itemId, lastPrice, lastBid, SniperState.BIDDING);
+		final SniperSnapshot snapshot = new SniperSnapshot(item, lastPrice, lastBid, SniperState.BIDDING);
 
-		assertThat((String) Column.ITEM_IDENTIFIER.valueIn(snapshot), is(itemId));
+		assertThat((String) Column.ITEM_IDENTIFIER.valueIn(snapshot), is(item.itemId));
 		assertThat((Integer) Column.LAST_PRICE.valueIn(snapshot), is(lastPrice));
 		assertThat((Integer) Column.LAST_BID.valueIn(snapshot), is(lastBid));
 		assertThat((String) Column.SNIPER_STATE.valueIn(snapshot), is("Bidding"));

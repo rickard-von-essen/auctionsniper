@@ -4,6 +4,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import org.junit.Test;
 
+import com.example.auctionsniper.Item;
 import com.example.auctionsniper.SniperPortfolio;
 import com.example.auctionsniper.UserRequestListener;
 import com.example.auctionsniper.systest.AuctionSniperDriver;
@@ -18,18 +19,18 @@ public class MainWindowTest {
 
 	@Test
 	public void makesUserRequestWhenJoinButtonClicked() {
-		final ValueMatcherProbe<String> buttonProbe = new ValueMatcherProbe<String>(equalTo("an item-id"),
+		final ValueMatcherProbe<Item> buttonProbe = new ValueMatcherProbe<Item>(equalTo(new Item("an item-id", 789)),
 				"join request");
 
 		mainWindow.addUserRequestListener(new UserRequestListener() {
 			@Override
-			public void joinAuction(final String itemId) {
-				buttonProbe.setReceivedValue(itemId);
+			public void joinAuction(final Item item) {
+				buttonProbe.setReceivedValue(item);
 			}
 		});
 
-		driver.startBiddingFor("aan item-idd"); // TODO this is a stupid bug in
-												// WindowLicker?
+		driver.startBiddingFor("aan item-idd", 789);
+		// TODO this is a stupid bug in WindowLicker?
 		driver.check(buttonProbe);
 	}
 }
