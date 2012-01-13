@@ -68,6 +68,10 @@ public class ApplicationRunner {
 				SnipersTableModel.textFor(SniperState.WINNING));
 	}
 
+	public void hasShownSniperIsLosing(final FakeAuctionServer auction, final int lastPrice, final int lastBid) {
+		driver.showSniperStatus(auction.getItemId(), lastPrice, lastBid, SnipersTableModel.textFor(SniperState.LOSING));
+	}
+
 	public void showSniperHasWonAuction(final FakeAuctionServer auction, final int lastPrice) {
 		driver.showSniperStatus(auction.getItemId(), lastPrice, lastPrice, SnipersTableModel.textFor(SniperState.WON));
 	}
@@ -76,9 +80,5 @@ public class ApplicationRunner {
 		if (driver != null) {
 			driver.dispose();
 		}
-	}
-
-	public void hasShownSniperIsLosing(final FakeAuctionServer auction, final int i, final int j) {
-		// TODO Auto-generated method stub
 	}
 }
