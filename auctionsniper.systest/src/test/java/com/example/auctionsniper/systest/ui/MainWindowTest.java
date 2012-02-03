@@ -29,7 +29,7 @@ public class MainWindowTest {
 			}
 		});
 
-		driver.startBiddingFor("aan item-idd", 789);
+		driver.startBiddingFor("aan item-id", 789);
 		// TODO this is a stupid bug in WindowLicker?
 		driver.check(buttonProbe);
 	}

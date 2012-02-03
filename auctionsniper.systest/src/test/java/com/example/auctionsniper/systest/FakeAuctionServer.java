@@ -57,6 +57,10 @@ public class FakeAuctionServer {
 				price, increment, bidder));
 	}
 
+	public void sendInvalidMessageContaining(final String invalidMessage) throws XMPPException {
+		currentChat.sendMessage(invalidMessage);
+	}
+
 	public void hasReceivedBid(final int bid, final String sniperId) throws InterruptedException {
 		reseivesAMessageMatching(sniperId, equalTo(format(XMPPAuction.BID_COMMAND_FORMAT, bid)));
 	}

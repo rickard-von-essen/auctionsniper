@@ -14,15 +14,28 @@ public class AuctionMessageTranslator implements MessageListener {
 
 	private final AuctionEventListener listener;
 	private final String sniperId;
+	private final XMPPFailureReporter failureReporter;
 
-	public AuctionMessageTranslator(final String sniperId, final AuctionEventListener listener) {
+	public AuctionMessageTranslator(final String sniperId, final AuctionEventListener listener,
+			final XMPPFailureReporter failureReporter) {
 		this.sniperId = sniperId;
 		this.listener = listener;
+		this.failureReporter = failureReporter;
 	}
 
 	@Override
 	public void processMessage(final Chat chat, final Message message) {
-		final AuctionEvent event = AuctionEvent.from(message.getBody());
+		final String messageBody = message.getBody();
+		try {
+			translate(messageBody);
+		} catch (final Exception parseException) {
+			failureReporter.cannotTranslateMessage(sniperId, messageBody, parseException);
+			listener.auctionFailed();
+		}
+	}
+
+	private void translate(final String messageBody) {
+		final AuctionEvent event = AuctionEvent.from(messageBody);
 
 		if ("CLOSE".equals(event.type())) {
 			listener.auctionClosed();
@@ -60,7 +73,11 @@ public class AuctionMessageTranslator implements MessageListener {
 		}
 
 		private String get(final String fieldName) {
-			return fields.get(fieldName);
+			final String value = fields.get(fieldName);
+			if (null == value) {
+				throw new MissingValueException(fieldName);
+			}
+			return value;
 		}
 
 		private void addField(final String field) {

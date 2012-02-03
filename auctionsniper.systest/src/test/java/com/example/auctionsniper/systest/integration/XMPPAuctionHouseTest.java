@@ -17,17 +17,18 @@ import com.example.auctionsniper.AuctionEventListener;
 import com.example.auctionsniper.Item;
 import com.example.auctionsniper.systest.ApplicationRunner;
 import com.example.auctionsniper.systest.FakeAuctionServer;
+import com.example.auctionsniper.xmpp.XMPPAuctionException;
 import com.example.auctionsniper.xmpp.XMPPAuctionHouse;
 
 @Category(IntegrationCategory.class)
 public class XMPPAuctionHouseTest {
 
 	private static final Item ITEM = new Item("item-54321", Integer.MAX_VALUE);
-	private final FakeAuctionServer server = new FakeAuctionServer(ITEM.itemId);
+	private final FakeAuctionServer server = new FakeAuctionServer(XMPPAuctionHouseTest.ITEM.itemId);
 	private XMPPAuctionHouse auctionHouse;
 
 	@Before
-	public void openConnection() throws XMPPException {
+	public void openConnection() throws XMPPAuctionException {
 		auctionHouse = XMPPAuctionHouse.connect(ApplicationRunner.XMPP_HOSTNAME, ApplicationRunner.SNIPER_ID,
 				ApplicationRunner.SNIPER_PASSWORD);
 	}
@@ -53,7 +54,7 @@ public class XMPPAuctionHouseTest {
 	public void receivesEventsFromAuctionServerAfterJoining() throws Exception {
 		final CountDownLatch auctionWasClosed = new CountDownLatch(1);
 
-		final Auction auction = auctionHouse.auctionFor(ITEM);
+		final Auction auction = auctionHouse.auctionFor(XMPPAuctionHouseTest.ITEM);
 		auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
 
 		auction.join();
@@ -73,6 +74,11 @@ public class XMPPAuctionHouseTest {
 			@Override
 			public void auctionClosed() {
 				auctionWasClosed.countDown();
+			}
+
+			@Override
+			public void auctionFailed() {
+				// not implemented
 			}
 		};
 	}

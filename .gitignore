@@ -8,3 +8,5 @@ auctionsniper.systest/.project
 auctionsniper.systest/.settings
 auctionsniper.systest/README.html
 do.sh
+*.sxrc
+auctionsniper.systest/src/test/resources/com/objogate/wl/keyboard/Mac-SE

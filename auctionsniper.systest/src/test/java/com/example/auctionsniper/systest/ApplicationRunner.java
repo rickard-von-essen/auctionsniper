@@ -1,6 +1,9 @@
 package com.example.auctionsniper.systest;
 
-import static com.example.auctionsniper.ui.SnipersTableModel.textFor;
+import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 import com.example.auctionsniper.Main;
 import com.example.auctionsniper.SniperState;
@@ -13,9 +16,11 @@ public class ApplicationRunner {
 	public static final String XMPP_HOSTNAME = "localhost";
 	public static final String SNIPER_ID = "sniper";
 	public static final String SNIPER_PASSWORD = "sniper";
-	public static final String SNIPER_XMPP_ID = String.format("%s@%s/%s", SNIPER_ID, XMPP_HOSTNAME, AUCTION_RESOURCE);
+	public static final String SNIPER_XMPP_ID = String.format("%s@%s/%s", ApplicationRunner.SNIPER_ID,
+			ApplicationRunner.XMPP_HOSTNAME, ApplicationRunner.AUCTION_RESOURCE);
 
 	private AuctionSniperDriver driver;
+	private final AuctionLogDriver logDriver = new AuctionLogDriver();
 
 	public void startBiddingIn(final FakeAuctionServer... auctions) {
 		startSniper();
@@ -32,15 +37,17 @@ public class ApplicationRunner {
 	private void startBiddingFor(final FakeAuctionServer auction, final int stopPrice) {
 		final String itemId = auction.getItemId();
 		driver.startBiddingFor(itemId, stopPrice);
-		driver.showSniperStatus(itemId, 0, 0, textFor(SniperState.JOINING));
+		driver.showSniperStatus(itemId, 0, 0, SnipersTableModel.textFor(SniperState.JOINING));
 	}
 
 	private void startSniper() {
+		logDriver.clearLog();
 		final Thread thread = new Thread("Test Application") {
 			@Override
 			public void run() {
 				try {
-					Main.main(new String[] { XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD });
+					Main.main(new String[] { ApplicationRunner.XMPP_HOSTNAME, ApplicationRunner.SNIPER_ID,
+							ApplicationRunner.SNIPER_PASSWORD });
 				} catch (final Exception error) {
 					error.printStackTrace();
 				}
@@ -76,9 +83,21 @@ public class ApplicationRunner {
 		driver.showSniperStatus(auction.getItemId(), lastPrice, lastPrice, SnipersTableModel.textFor(SniperState.WON));
 	}
 
+	public void showSniperHasFailed(final FakeAuctionServer auction, final int lastPrice, final int lastBid) {
+		driver.showSniperStatus(auction.getItemId(), lastPrice, lastBid, SnipersTableModel.textFor(SniperState.FAILED));
+	}
+
+	public void reportsInvalidMessage(final FakeAuctionServer auction, final String brokenMessage) throws IOException {
+		logDriver.hasEntry(stringContainsInOrder(Arrays.asList(new String[] { "LoggingXMPPFailureReporter",
+				"Could not translate message", brokenMessage, "because", "ArrayIndexOutOfBoundsException" })));
+	}
+
 	public void stop() {
 		if (driver != null) {
 			driver.dispose();
+		}
+		if (logDriver != null) {
+			logDriver.clearLog();
 		}
 	}
 }
