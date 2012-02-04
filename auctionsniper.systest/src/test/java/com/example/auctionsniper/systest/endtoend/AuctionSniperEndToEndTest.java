@@ -113,11 +113,9 @@ public class AuctionSniperEndToEndTest {
 	public void sniperReportsInvalidAuctionMessageAndStopsRespondingToEvents() throws Exception {
 		final String brokenMessage = "a broken message";
 		auction.startSellingItem();
-		// TODO replcement in WindowLicker don't work (on Linux at least).
-		// auction2.startSellingItem();
+		auction2.startSellingItem();
 
-		// application.startBiddingIn(auction, auction2);
-		application.startBiddingIn(auction);
+		application.startBiddingIn(auction, auction2);
 		auction.hasReceivedJoinRequestsFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
 
 		auction.reportPrice(500, 20, "other bidder");
@@ -127,7 +125,7 @@ public class AuctionSniperEndToEndTest {
 		application.showSniperHasFailed(auction, 500, 520);
 
 		auction.reportPrice(520, 21, "other bidder");
-		// waitForAnotherAuctionEvent();
+		waitForAnotherAuctionEvent();
 
 		application.reportsInvalidMessage(auction, brokenMessage);
 		application.showSniperHasFailed(auction, 500, 520);

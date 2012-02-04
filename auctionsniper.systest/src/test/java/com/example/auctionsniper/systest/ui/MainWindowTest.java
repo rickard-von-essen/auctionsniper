@@ -23,13 +23,12 @@ public class MainWindowTest {
 				"join request");
 
 		mainWindow.addUserRequestListener(new UserRequestListener() {
-			@Override
 			public void joinAuction(final Item item) {
 				buttonProbe.setReceivedValue(item);
 			}
 		});
 
-		driver.startBiddingFor("aan item-id", 789);
+		driver.startBiddingFor("aan item-idd", 789);
 		// TODO this is a stupid bug in WindowLicker?
 		driver.check(buttonProbe);
 	}

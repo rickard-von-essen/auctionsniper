@@ -40,7 +40,6 @@ public class FakeAuctionServer {
 		connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 
-			@Override
 			public void chatCreated(final Chat chat, final boolean createdLocally) {
 				currentChat = chat;
 				chat.addMessageListener(messageListener);
@@ -81,7 +80,6 @@ public class FakeAuctionServer {
 
 		private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<Message>(1);
 
-		@Override
 		public void processMessage(final Chat chat, final Message message) {
 			messages.add(message);
 		}

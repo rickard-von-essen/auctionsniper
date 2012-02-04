@@ -10,3 +10,4 @@ auctionsniper.systest/README.html
 do.sh
 *.sxrc
 auctionsniper.systest/src/test/resources/com/objogate/wl/keyboard/Mac-SE
+auction.log
